@@ -25,7 +25,7 @@ uint64_t state[4] = {0xef6c2fd2a9ef229f,
 //uint64_t state[4] = {1,2,3,4};
 //uint64_t state[4] = {0,0,0,0};
 
-void nprng_seed(uint64_t seed[4])
+void clcg_seed(uint64_t seed[4])
 {
 	state[0] ^= seed[0];
 	state[1] ^= seed[1];
@@ -36,7 +36,7 @@ void nprng_seed(uint64_t seed[4])
 
 size_t next = 0;
 
-uint64_t nprng_next()
+uint64_t clcg_next()
 {
 	state[next] = state[next] * a[next] + c[next];
 	uint64_t crc = crc64(0, (const unsigned char*)state, 32);
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 	
 	while(true)
 	{
-		uint64_t r = nprng_next();
+		uint64_t r = clcg_next();
 		fwrite (&r, 1, 8, stdout); 
 	}
 }
