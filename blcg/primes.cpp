@@ -58,9 +58,10 @@ int main(int argc, char const *argv[])
 	}
 	size_t found = 0;
 	run = 1; 	
-	while(found <= 10)
+	while(found <= 1000)
 	{
 		this_thread::sleep_for(1000ms);
+		//RAII scope for the lock
 		{
 			lock_guard<mutex> lock(m);
 			if(primes.size() >= 20)
@@ -70,6 +71,7 @@ int main(int argc, char const *argv[])
 					out << hex << e << endl;
 					found++;
 				}
+				primes.clear();
 			}
 		}
 	}
