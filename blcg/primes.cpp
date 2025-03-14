@@ -19,9 +19,9 @@ uint64_t p64()
 	random_device r;
 	do {
 		uint64_t start = 0;
-		while(r.entropy() < 32);
+		//while(r.entropy() < 32);
 		start = (uint64_t)r() << 32;
-		while(r.entropy() < 32);
+		//while(r.entropy() < 32);
 		start |= 0x8000000000000000 | (r() & 0xFFFFFF00);
 		prime = get_prime(start,start+0x000000FF);
 	} while(prime == 0);
