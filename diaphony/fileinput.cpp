@@ -1,22 +1,20 @@
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <string>
 #include <cstdlib>
+#include <stdexcept>
 
 using namespace std;
 
-int main(int argc, char* argv[])
+vector<vector<double> > fileinput(istream& in)
 {
-	istream& in = *((argc > 1) ? new ifstream(argv[1]) : &cin);
 	//find the first non-comment line #
 	string line;
 	do {
 		getline(in, line);
 		if(in.fail())
 		{
-			cerr << "File ended while looking for first data line." << endl;
-			exit(1);
+			throw std::runtime_error("File ended while looking for first data line.");
 		}
 	} while (line.size() > 0 && line[0] == '#');
 	//count the columns
@@ -29,8 +27,7 @@ int main(int argc, char* argv[])
 	}
 	if(cols == 0)
 	{
-		cerr << "File ended with no columns detected." << endl;
-		exit(1);
+		throw std::runtime_error("File ended with no columns detected.");
 	}
 	size_t rows = 0;
 	vector<vector<double> > data;
@@ -44,12 +41,11 @@ int main(int argc, char* argv[])
 			ss >> t;
 			if(ss.fail())
 			{
-				cerr << "Error reading on data line " << rows << endl;
-				exit(1); 
+				throw std::runtime_error("Error reading on data line " + to_string(rows));
 			}
 			v.push_back(t);
 		}
 		data.push_back(v);
 	} while( getline(in, line));
-	cout << "Read input file with " << rows << " rows and " << cols << " columns." << endl;
+	return data;
 }
